@@ -1,9 +1,9 @@
 import Cookies from 'universal-cookie';
 const cookies = new Cookies();
 const isLoggedIn = () => {
-    if(cookies.get('token')!=null)
+    if (cookies.get('token') != null)
         return true;
-        
-    return false;    
+
+    return false;
 };
 export default isLoggedIn;
