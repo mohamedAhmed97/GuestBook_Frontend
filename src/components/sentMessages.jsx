@@ -10,7 +10,7 @@ import useConstructor from '../functions/use.constructor'
 import axios from 'axios'
 import TableCell from '@material-ui/core/TableCell';
 import SentMessage from './sentMessage'
-
+import { useAlert } from 'react-alert'
 
 const useStyles = makeStyles({
     table: {
@@ -19,10 +19,9 @@ const useStyles = makeStyles({
 
 });
 
-
-
 function SentMessages(props) {
     const classes = useStyles();
+    const alert = useAlert()
     const [state, setState] = React.useState({
         messages: [],
     });
@@ -45,7 +44,8 @@ function SentMessages(props) {
         axios.delete(`http://localhost:3001/api/messages/${message._id}`, {
             headers: { Authorization: `Bearer ${props.token}` }
         }).then((res) => {
-            console.log(res);
+            alert.success("Message Deleted");
+            props.history.replace('/')
         }).catch((error) => {
             console.log(error);
         });

@@ -2,9 +2,15 @@ import React from 'react';
 import axios from 'axios';
 import useConstructor from '../functions/use.constructor'
 import Cookies from 'universal-cookie';
+import { useAlert } from 'react-alert'
+
 const cookies = new Cookies();
 
 function Edit(props) {
+    const alert = useAlert()
+    const [state, setState] = React.useState({
+        load: false
+    });
     useConstructor(() => {
         axios.get(`http://localhost:3001/api/messages/${props.match.params.id}`, {
             headers: { Authorization: `Bearer ${cookies.get('token')}` }
@@ -20,12 +26,10 @@ function Edit(props) {
         });
 
     });
-    const [state, setState] = React.useState({
-        load: false
-    });
+
     const handleChange = ({ target }) => {
         setState({ ...state, [target.name]: target.value, load: true });
-       // console.log(state);
+        // console.log(state);
     };
 
     const submitRequest = (e) => {
@@ -35,13 +39,8 @@ function Edit(props) {
             { title: state.title, message: state.message }, {
             headers: { Authorization: `Bearer ${cookies.get('token')}` }
         }).then((res) => {
-            /* if (res.status === 200) {
-                cookies.set('token', res.data.token, { path: '/' });
-                cookies.set('userData', res.data.user, { path: '/' });
-                props.history.replace('/home')
-            } */
-            console.log(res);
-            //
+            alert.success("Message Edited");
+            props.history.replace('/')
         }).catch((error) => {
             console.log(state.data);
             console.log(error);
@@ -53,7 +52,7 @@ function Edit(props) {
 
     return (
         <React.Fragment>
-            {state.load == true ?
+            {state.load ===true ?
                 <div className="container">
                     <form noValidate onSubmit={submitRequest}>
                         <div className="form-group">

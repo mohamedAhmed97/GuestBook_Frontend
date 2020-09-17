@@ -4,6 +4,8 @@ import axios from 'axios'
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Cookies from 'universal-cookie';
+import { useAlert } from 'react-alert'
+
 const cookies = new Cookies();
 
 const useStyles = makeStyles((theme) => ({
@@ -13,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 function MessageDeatils(props) {
     const classes = useStyles();
+    const alert = useAlert()
     const [state, setState] = React.useState({
         messages: [],
         reply: '',
@@ -38,12 +41,8 @@ function MessageDeatils(props) {
         axios.patch(`http://localhost:3001/api/messages/${props.match.params.id}/reply`, state.reply, {
             headers: { Authorization: `Bearer ${cookies.get('token')}` }
         }).then((res) => {
-            /* if (res.status === 200) {
-                cookies.set('token', res.data.token, { path: '/' });
-                cookies.set('userData', res.data.user, { path: '/' });
-                props.history.replace('/home')
-            } */
-            console.log(res);
+            alert.success("Reply sent");
+            props.history.replace('/')
             //
         }).catch((error) => {
             console.log(cookies.get('token'));

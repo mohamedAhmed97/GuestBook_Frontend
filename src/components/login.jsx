@@ -3,7 +3,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
@@ -12,6 +11,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
+import { useAlert } from 'react-alert'
+import {Link} from 'react-router-dom'
+
 const cookies = new Cookies();
 
 function Copyright() {
@@ -60,6 +62,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignInSide(props) {
     const classes = useStyles();
+    const alert = useAlert()
     const [state, setState] = React.useState({
         email: '',
         password: ''
@@ -74,11 +77,10 @@ export default function SignInSide(props) {
             if (res.status === 200) {
                 cookies.set('token', res.data.token, { path: '/' });
                 cookies.set('userData', res.data.user, { path: '/' });
-                props.history.replace('/home')
+                props.history.replace('/')
             }
-            //
         }).catch((error) => {
-            console.log(error);
+            alert.error("Error In Email Or Password");
         });
 
     }
@@ -129,13 +131,8 @@ export default function SignInSide(props) {
                             Sign In
                         </Button>
                         <Grid container>
-                            <Grid item xs>
-                                <Link href="#" variant="body2">
-                                    Forgot password?
-                                </Link>
-                            </Grid>
                             <Grid item>
-                                <Link href="#" variant="body2">
+                                <Link to="/signup" variant="body2">
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                             </Grid>

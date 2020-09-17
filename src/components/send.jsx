@@ -1,14 +1,28 @@
 import React from 'react';
 import axios from 'axios';
 import UsersDate from './usersDate';
+import Cookies from 'universal-cookie';
+import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
+import { useAlert } from 'react-alert'
+
+const cookies = new Cookies();
 
 function Send(props) {
+    const alert = useAlert()
+    const useStyles = makeStyles((theme) => ({
+        button: {
+            margin: theme.spacing(1),
+        },
+    }));
     const [state, setState] = React.useState({
         to: '',
         title: '',
         message: '',
 
     });
+    const classes = useStyles();
+
     const handleChange = ({ target }) => {
         setState({ ...state, [target.name]: target.value });
     };
@@ -16,21 +30,15 @@ function Send(props) {
     const submitRequest = (e) => {
         e.preventDefault();
         axios.post(`http://localhost:3001/api/messages/${state.to}`, state, {
-            headers: { Authorization: `Bearer ${props.token}` }
+            headers: { Authorization: `Bearer ${cookies.get('token')}` }
         }).then((res) => {
-            /* if (res.status === 200) {
-                cookies.set('token', res.data.token, { path: '/' });
-                cookies.set('userData', res.data.user, { path: '/' });
-                props.history.replace('/home')
-            } */
-            console.log(res);
-            //
+           //console.log(res);
+           alert.success("Message Sent");
         }).catch((error) => {
             console.log(error);
         });
         /* console.log(state);
         console.log(props.token); */
-
     }
 
     return (
@@ -73,7 +81,14 @@ function Send(props) {
 
                     </div>
                     <div className="center">
-                        <button className="btn btn-success p-2 mybtn" value="send" name="submit">Submit </button>
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            color="primary"
+                            className={classes.button}
+                        >
+                            Send
+                        </Button>
                     </div>
                 </form>
 

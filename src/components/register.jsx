@@ -3,8 +3,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -14,6 +12,9 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import axios from 'axios';
+import { useAlert } from 'react-alert'
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
 var Joi = require('joi-browser');
 function Copyright() {
     return (
@@ -54,8 +55,9 @@ const schema = {
     email: Joi.string().email(),
 };
 
-export default function Register() {
+export default function Register(props) {
     const classes = useStyles();
+    const alert = useAlert()
     const [state, setState] = React.useState({
         name: '',
         email: '',
@@ -74,9 +76,18 @@ export default function Register() {
             return;
         };
         axios.post('http://localhost:3001/api/users', state).then((res) => {
-            console.log(res.status)
+            console.log(res);
+            if (res.status === 201) {
+                cookies.set('token', res.data.token, { path: '/' });
+                cookies.set('userData', res.data.user, { path: '/' });
+                props.history.replace('/')
+            }
+            if (res.status === 202 && res.data.code === 11000) {
+                alert.error("Sorry This Email Is Existed");
+            }
+            //
         }).catch((error) => {
-            console.log(error);
+            alert.error("Error In Server, Check That You Running The Server");
         });
 
     }
@@ -86,7 +97,13 @@ export default function Register() {
         delete data.errors;
         const res = Joi.validate(data, schema, { abortEarly: false });
         if (res.error === null) {
-            setState({ errors: {} })
+            console.log(state);
+            setState({
+                name: data.name,
+                email: data.email,
+                password: data.password,
+                errors: {}
+            })
             return;
         }
 
@@ -118,6 +135,7 @@ export default function Register() {
                                 id="name"
                                 label="First Name"
                                 autoFocus
+                                value={state.name}
                                 onChange={handleChange}
                             />
                             {state.errors.name && (
@@ -138,6 +156,7 @@ export default function Register() {
                                 label="Email Address"
                                 name="email"
                                 autoComplete="email"
+                                value={state.email}
                                 onChange={handleChange}
                             />
                             {state.errors.email && (
@@ -151,13 +170,14 @@ export default function Register() {
                         <Grid item xs={12}>
                             <TextField
                                 variant="outlined"
-                                required
+
                                 fullWidth
                                 name="password"
                                 label="Password"
                                 type="password"
                                 id="password"
-                                autoComplete="current-password"
+                                autoFocus
+                                value={state.password}
                                 onChange={handleChange}
                             />
                             {state.errors.password && (
@@ -167,12 +187,6 @@ export default function Register() {
                                 </div>
 
                             )}
-                        </Grid>
-                        <Grid item xs={12}>
-                            <FormControlLabel
-                                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                                label="I want to receive inspiration, marketing promotions and updates via email."
-                            />
                         </Grid>
                     </Grid>
                     <Button
