@@ -33,17 +33,18 @@ function MessageDeatils(props) {
 
     });
     const handleChange = ({ target }) => {
-        setState({ ...state, [target.name]: target.value });
+        setState({ ...state, reply: target.value });
     };
 
     const submitRequest = (e) => {
         e.preventDefault();
-        axios.patch(`http://localhost:3001/api/messages/${props.match.params.id}/reply`, state.reply, {
+        console.log(state.reply);
+        axios.patch(`http://localhost:3001/api/messages/${props.match.params.id}/reply`, { reply: state.reply }, {
             headers: { Authorization: `Bearer ${cookies.get('token')}` }
         }).then((res) => {
+            // console.log(res);
             alert.success("Reply sent");
             props.history.replace('/')
-            //
         }).catch((error) => {
             console.log(cookies.get('token'));
             console.log(`http://localhost:3001/api/messages/${props.match.params.id}/reply`);
@@ -69,6 +70,29 @@ function MessageDeatils(props) {
                             <p className="text-center">from: {state.messages.from.email}</p>
                             <p className="text-center">name: {state.messages.from.name}</p>
                         </div>
+                        <br />
+                        {state.reply !== null ?
+                            <div className="card">
+                                <div className="card-header">
+                                    <h5>Reply</h5>
+                                </div>
+                                <div className="card-body">
+                                    <div className="card-header">
+                                        <h5>Title : {state.messages.title}</h5>
+                                    </div>
+                                    <div className="card-body">
+                                        <h5 className="card-title">reply</h5>
+                                        <p className="card-text">{state.messages.reply}</p>
+                                        <hr />
+                                        <p className="text-center">from: {state.messages.from.email}</p>
+                                        <p className="text-center">name: {state.messages.from.name}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            :
+                            <p>No Reply</p>
+                        }
                         <br />
                         <div className="card">
                             <div className="card-header">

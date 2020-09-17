@@ -38,8 +38,31 @@ function SentMessageDeatils(props) {
                             <p className="text-center">name: {state.messages.from.name}</p>
                         </div>
                         <br />
+                        {state.reply !== null ?
+                            <div className="card">
+                                <div className="card-header">
+                                    <h5>Reply</h5>
+                                </div>
+                                <div className="card-body">
+                                    <div className="card-header">
+                                        <h5>Title : {state.messages.title}</h5>
+                                    </div>
+                                    <div className="card-body">
+                                        <h5 className="card-title">reply</h5>
+                                        <p className="card-text">{state.messages.reply}</p>
+                                        <hr />
+                                        <p className="text-center">from: {state.messages.from.email}</p>
+                                        <p className="text-center">name: {state.messages.from.name}</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            :
+                            <p>No Reply</p>
+                        }
                     </div>
                 </div>
+
                 :
                 <div>
                     <p className="text-center">loading</p>
