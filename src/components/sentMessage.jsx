@@ -6,7 +6,7 @@ function SentMessage(props) {
     return (
         <React.Fragment>
             <TableCell component="th" scope="row">
-                <Link to={`/sent/message/${props.message._id}`}>{props.message.message}</Link>
+                <Link to={`/sent/message/${props.message._id}`}>{props.message.title}</Link>
             </TableCell>
             <TableCell component="th" scope="row">
                 <button className="btn btn-danger" onClick={() => props.deleteMessage(props.message)} >
