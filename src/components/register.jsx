@@ -143,7 +143,6 @@ export default function Register(props) {
                                     <br />
                                     <Alert severity="error">{state.errors.name}</Alert>
                                 </div>
-
                             )}
 
                         </Grid>

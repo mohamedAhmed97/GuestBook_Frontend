@@ -16,7 +16,7 @@ function SentMessage(props) {
             <TableCell component="th" scope="row">
                 <Link to={`/edit/message/${props.message._id}`}>
                     <button className="btn btn-primary" >
-                        <i class="fas fa-edit"></i>
+                        <i className="fas fa-edit"></i>
                     </button>
                 </Link>
             </TableCell>

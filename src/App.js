@@ -9,6 +9,7 @@ import isLoggedIn from './functions/isLoggedIn'
 import MessageDeatils from './components/messageDeatils';
 import SentMessageDeatils from './components/sentMessageDetails';
 import Edit from './components/edit';
+
 function App(props) {
   return (
     <React.Fragment>

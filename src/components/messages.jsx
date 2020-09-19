@@ -62,7 +62,7 @@ function MessagesTable(props) {
                 <TableBody>
                     {state.messages.map((row) => (
                         <TableRow key={row.name}>
-                            <Message message={row} deleteMessage={deleteMessage}></Message>
+                            <Message key={row.id} message={row} deleteMessage={deleteMessage}></Message>
                         </TableRow>
                     ))}
                 </TableBody>

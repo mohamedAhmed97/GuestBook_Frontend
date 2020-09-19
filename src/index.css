@@ -11,3 +11,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+button:focus,
+button:active{
+
+  /* outline: 1px dotted; */
+  /* outline: none;
+  color:red;
+  border: none;
+  background-color: green; */
+}
+

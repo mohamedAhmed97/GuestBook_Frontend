@@ -1,0 +1,28 @@
+.navbar_header{
+    background-color: #3f51b5;
+    color:white
+}
+
+.navbar_links{
+    color: white;
+    font-size: 17px;
+}
+
+.navbar_links:hover{
+    color: white;
+    opacity: 0.8;
+    text-decoration:none;
+}
+
+.navbar_Brand {
+    color: white;
+    font-size: 20px;
+}
+.navbar_Brand:hover {
+    color: white;
+    text-decoration:none;
+}
+.navbar-light .navbar-text{
+    color:white
+}
+
