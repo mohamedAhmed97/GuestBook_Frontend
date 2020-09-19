@@ -48,33 +48,32 @@ const useStyles = makeStyles((theme) => ({
         margin: theme.spacing(3, 0, 2),
     },
 }));
-//schema of joi
-const schema = {
-    name: Joi.string().alphanum().min(3).max(30).required(),
-    password: Joi.string().regex(/[a-zA-Z0-9]{3,30}/),
-    email: Joi.string().email(),
-};
 
 export default function Register(props) {
     const classes = useStyles();
     const alert = useAlert()
     const [state, setState] = React.useState({
-        name: '',
-        email: '',
-        password: '',
+        name: "",
+        email: "",
+        password: "",
         errors: {}
     });
+    //schema of joi
+    const schema = {
+        name: Joi.string().alphanum().min(3).max(30).required(),
+        password: Joi.string().regex(/[a-zA-Z0-9]{3,30}/),
+        email: Joi.string().email(),
+    };
     const handleChange = ({ target }) => {
         setState({ ...state, [target.name]: target.value });
     };
 
     const submitRequest = (e) => {
         e.preventDefault();
+
         const errors = validate();
-        if (errors) {
-            console.log(errors);
-            return;
-        };
+
+        if (errors) return;
         axios.post('http://localhost:3001/api/users', state).then((res) => {
             console.log(res);
             if (res.status === 201) {
@@ -83,6 +82,8 @@ export default function Register(props) {
                 props.history.replace('/')
             }
             if (res.status === 202 && res.data.code === 11000) {
+                const data={...state};
+                setState(data);
                 alert.error("Sorry This Email Is Existed");
             }
             //
@@ -93,25 +94,22 @@ export default function Register(props) {
     }
     const validate = () => {
         const errors = {};
+        //Clone State
         const data = { ...state };
         delete data.errors;
         const res = Joi.validate(data, schema, { abortEarly: false });
         if (res.error === null) {
-            console.log(state);
-            setState({
-                name: data.name,
-                email: data.email,
-                password: data.password,
-                errors: {}
-            })
-            return;
+            setState({ data, errors: {} });
+            return null;
         }
 
         for (const error of res.error.details) {
             errors[error.path] = error.message;
         }
-        setState({ errors })
-        return errors
+
+        //Set State
+        setState({ ...data, errors });
+        return errors;
     }
     return (
         <Container component="main" maxWidth="xs">
