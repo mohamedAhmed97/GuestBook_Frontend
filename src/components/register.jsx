@@ -3,7 +3,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
+import {Link} from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Alert from '@material-ui/lab/Alert';
@@ -61,7 +61,7 @@ export default function Register(props) {
     //schema of joi
     const schema = {
         name: Joi.string().alphanum().min(3).max(30).required(),
-        password: Joi.string().regex(/[a-zA-Z0-9]{3,30}/),
+        password: Joi.string().min(8).max(30).regex(/[a-zA-Z0-9]{3,30}/),
         email: Joi.string().email(),
     };
     const handleChange = ({ target }) => {
@@ -197,7 +197,7 @@ export default function Register(props) {
                     </Button>
                     <Grid container justify="flex-end">
                         <Grid item>
-                            <Link href="#" variant="body2">
+                            <Link to="/login" variant="body2">
                                 Already have an account? Sign in
                             </Link>
                         </Grid>

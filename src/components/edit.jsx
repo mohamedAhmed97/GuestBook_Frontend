@@ -62,7 +62,6 @@ function Edit(props) {
 
     const submitRequest = (e) => {
         e.preventDefault();
-        console.log(state);
         axios.patch(`http://localhost:3001/api/messages/${props.match.params.id}`,
             { title: state.title, message: state.message }, {
             headers: { Authorization: `Bearer ${cookies.get('token')}` }

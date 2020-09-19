@@ -31,14 +31,21 @@ function Send(props) {
 
     const submitRequest = (e) => {
         e.preventDefault();
-        axios.post(`http://localhost:3001/api/messages/${state.to}`, state, {
-            headers: { Authorization: `Bearer ${cookies.get('token')}` }
-        }).then((res) => {
-            //console.log(res);
-            alert.success("Message Sent");
-        }).catch((error) => {
-            console.log(error);
-        });
+        console.log(state);
+        if (!state.to|| state.to === "0") {
+            alert.error("Select User");
+        } else {
+            axios.post(`http://localhost:3001/api/messages/${state.to}`, state, {
+                headers: { Authorization: `Bearer ${cookies.get('token')}` }
+            }).then((res) => {
+                //console.log(res);
+                alert.success("Message Sent");
+            }).catch((error) => {
+                console.log(error);
+            });
+        }
+
+
     }
 
     return (
@@ -55,6 +62,7 @@ function Send(props) {
                         onChange={handleChange}
                         required
                     >
+                        <option value="0" selected="selected">Select User</option>
                         {props.users.map((user) => (
                             <UsersDate key={user._id} user={user}></UsersDate>
                         ))}
@@ -66,7 +74,7 @@ function Send(props) {
                         className="form-control send_input" name="title"
                         id="exampleInputEmail1"
                         aria-describedby="emailHelp"
-                        placeholder="Enter email"
+                        placeholder="Enter Your Title"
                         onChange={handleChange}
                     />
 
